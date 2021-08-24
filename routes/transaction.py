@@ -12,7 +12,6 @@ app_transactions = APIRouter()
 
 # Method to create a transaction
 
-
 @app_transactions.post(
     path='/create_transaction',
     status_code=200,
@@ -171,14 +170,15 @@ async def create_confirmation(
         'bank_referenced_code': bank_referenced_code,
         'pseCycle': pseCycle
     }
-    
-    print(transaction)
 
     query_path = path.join("transactions", "create_transaction.sql")
     execute_query(
         query_name=query_path,
-        fetch_data=True,
-        transaction=transaction
+        fetch_data=False,
+        fetch_one=False,
+        **transaction
     )
 
     return "success"
+
+

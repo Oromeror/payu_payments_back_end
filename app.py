@@ -6,14 +6,14 @@ from settings import ENVIRONMENT
 
 app = FastAPI()
 
-if ENVIRONMENT == 'prod':
-    origins = ['https://payments-1001-angular.web.app/']
-else:
-    origins = ['http://localhost:4200']
+# if ENVIRONMENT == 'prod':
+#     origins = ['https://payments-1001-angular.web.app/']
+# else:
+#     origins = ['http://localhost:4200']
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
