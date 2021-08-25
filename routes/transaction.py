@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from interface.transaction import TransactionInfo
 from database.mysql import execute_query
 from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED, HTTP_200_OK, HTTP_404_NOT_FOUND
+import hashlib
 
 
 app_transactions = APIRouter()
@@ -110,7 +111,7 @@ async def create_confirmation(
         'payment_method': payment_method,
         'payment_method_type': payment_method_type,
         'installments_number': installments_number,
-        'value': value,
+        'value': validate_zeros(value),
         'tax': tax,
         'additional_value': additional_value,
         'transaction_date': transaction_date,
@@ -171,14 +172,52 @@ async def create_confirmation(
         'pseCycle': pseCycle
     }
 
-    query_path = path.join("transactions", "create_transaction.sql")
-    execute_query(
-        query_name=query_path,
-        fetch_data=False,
-        fetch_one=False,
-        **transaction
-    )
+    if validate_signature(transaction['merchant_id'],transaction['reference_sale'],transaction['value'],transaction['currency'],transaction['state_pol'],transaction['sign']) == True :
+        
+        query_path = path.join("transactions", "create_transaction.sql")
+        execute_query(
+            query_name=query_path,
+            fetch_data=False,
+            fetch_one=False,
+            **transaction)
+        
+        return "success"
+    else:
+        return "The signature is not valid"
 
-    return "success"
 
+def validate_zeros(value: float):
+    new_value: float
+
+    before_dec, after_dec = str(value).split('.')
+
+    if  after_dec == '00':
+        new_value = float('.'.join((before_dec, after_dec[0:1])))
+        
+    elif after_dec != '00':
+        new_value = float('.'.join((before_dec, after_dec[0:2])))
+
+    return new_value
+    
+
+def generate_mds5_diganture(sign_base: str):
+    return hashlib.md5(sign_base.encode('utf-8')).hexdigest()
+
+def generate_sha1_diganture(sign_base: str):
+    return hashlib.sha1(sign_base.encode('utf-8')).hexdigest()
+
+def generate_sha256_diganture(sign_base: str):
+    return hashlib.sha256(sign_base.encode('utf-8')).hexdigest()    
+
+def validate_signature(merchant_id: str, reference_sale: str, value: float, currency: str, state_pol: str, sign: str):
+    
+    apiKey = ''
+    sign_base = '%s~%s~%s~%s~%s~%s' % (apiKey,merchant_id,reference_sale,value,currency,state_pol)
+
+    if sign==generate_mds5_diganture(sign_base) or sign==generate_sha1_diganture(sign_base) or sign==generate_sha256_diganture(sign_base): 
+        valid_sign = True  
+    else:
+        valid_sign = False
+    
+    return valid_sign
 

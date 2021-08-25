@@ -34,29 +34,29 @@
 
 - For development:
 
-To build docker
+    To build docker
 
-`docker build . -t yourrepository:development`
+    `docker build . -t yourrepository:development`
 
-To push docker
+    To push docker
 
-`docker push yourrepository:development`
+    `docker push yourrepository:development`
 
-To test docker locally
+    To test docker locally
 
-`docker run -it -p 80:5000 yourrepository:development:development`
+    `docker run -it -p 80:5000 yourrepository:development:development`
 
 
-- For production:
- 
-To build docker
+    - For production:
+    
+    To build docker
 
-`docker build . -t yourrepository:development:latest`
+    `docker build . -t yourrepository:development:latest`
 
-To push docker
+    To push docker
 
-`docker push yourrepository:development:latest`
+    `docker push yourrepository:development:latest`
 
-To test docker locally
+    To test docker locally
 
-`docker run -it -p 80:8000 yourrepository:development:latest`
+    `docker run -it -p 80:8000 yourrepository:development:latest`
