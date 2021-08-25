@@ -1,4 +1,5 @@
 # Billing API
+This repository is based on the implementation of a simple API for the PayU [confirmation page](http://developers.payulatam.com/latam/en/docs/integrations/webcheckout-integration/confirmation-page.html).
 
 ## Installation
 
@@ -47,7 +48,7 @@
     `docker run -it -p 80:5000 yourrepository:development:development`
 
 
-    - For production:
+- For production:
     
     To build docker
 
