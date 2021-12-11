@@ -9,8 +9,8 @@ This repository is based on the implementation of a simple API for the PayU [con
 
 - Activate the virtual environment:
 
-    - In Linux:
-    `source venv/bin/activate`
+    - In Linux or Mac:
+    `source virtual-env/bin/activate`
 
     - Windows:
     `.\venv\Scripts\activate.bat`

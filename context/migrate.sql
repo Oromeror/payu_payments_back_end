@@ -9,7 +9,7 @@ USE payments;
 -- --------------------------------------------------------
 
 --
--- Table stucture for transaction entitie
+-- Table structure for transaction entity
 --
 
 CREATE TABLE IF NOT EXISTS transaction (

@@ -1,7 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
 
-
 class TransactionInfo(BaseModel):
     merchant_id: Optional[int]
     state_pol: Optional[str]
